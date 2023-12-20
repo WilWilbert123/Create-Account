@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Image } fro
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from '../components/ThemeContext';
 
 const SignUpScreen = () => {
     const [newUsername, setNewUsername] = useState('');
@@ -13,6 +14,7 @@ const SignUpScreen = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
     const [loginModalVisible, setLoginModalVisible] = useState(false);
+    const { backgroundColor, textColor, placeholderTextColor } = useTheme();
 
     const navigation = useNavigation();
 
@@ -77,7 +79,7 @@ const SignUpScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor }]}>
             <View style={styles.imageContainer}>
                 <TouchableOpacity onPress={handleImageUpload}>
                     {selectedImage ? (
@@ -90,20 +92,21 @@ const SignUpScreen = () => {
                 </TouchableOpacity>
             </View>
             <View style={{ marginTop: 30 }}>
-                <Text style={styles.title}>Sign up!</Text>
+                <Text style={[styles.title, { color: textColor }]}>Sign up!</Text>
             </View>
             <View style={styles.inputContainer}>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: textColor, placeholderTextColor: textColor }]}
                     placeholder="Username"
                     value={newUsername}
                     onChangeText={(text) => setNewUsername(text)}
                 />
+
                 <View style={styles.borderBottom}></View>
             </View>
             <View style={styles.inputContainer}>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: textColor }]}
                     placeholder="Password"
                     secureTextEntry={!showPassword}
                     value={newPassword}
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: 'white',
+        backgroundColor: 'darkred',
     },
     imageContainer: {
         alignItems: 'center',
@@ -185,12 +188,13 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
-        backgroundColor: 'darkred',
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
     },
     placeholderText: {
-        color: 'white',
+        color: 'black',
+
     },
     title: {
         fontSize: 24,
@@ -216,6 +220,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 20,
+        borderWidth: 1,
+        borderColor: "white",
     },
     buttonText: {
         color: 'white',

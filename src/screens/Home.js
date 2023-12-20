@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, TouchableWi
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from '../components/ThemeContext';
 
 const Home = () => {
     const [username, setUsername] = useState('');
@@ -11,6 +12,7 @@ const Home = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const isSignInButtonDisabled = !username || !password;
+    const { backgroundColor, textColor } = useTheme();
 
     const navigation = useNavigation();
 
@@ -86,16 +88,16 @@ const Home = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.topContainer}>
-                <Text style={styles.title}>Hello</Text>
-                <Text style={styles.title}>Sign in!</Text>
+        <View style={[styles.container, { backgroundColor }]}>
+            <View style={[styles.topContainer, { backgroundColor }]}>
+                <Text style={[styles.title, { color: textColor }]}>Hello</Text>
+                <Text style={[styles.title, { color: textColor }]}>Sign in!</Text>
             </View>
 
             <View style={styles.bottomContainer}>
                 <Text style={{ marginLeft: 8, color: 'red', fontWeight: 'bold' }}>Gmail</Text>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: textColor }]}
                     placeholder="Username"
                     value={username}
                     onChangeText={(text) => setUsername(text)}

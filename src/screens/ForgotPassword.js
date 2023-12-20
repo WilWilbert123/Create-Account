@@ -2,16 +2,30 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ForgotPasswordScreen = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [recoveryQuestion, setRecoveryQuestion] = useState('');
-
-    const handleRecoverPassword = () => {
-        // Implement your password recovery logic here
+  
+    const handleRecoverPassword = async () => {
+      try {
+        // Retrieve the saved recovery answer from AsyncStorage
+        const savedRecoveryAnswer = await AsyncStorage.getItem('recoveryAnswer');
+        
+        // Check if the entered answer matches the saved answer
+        if (savedRecoveryAnswer === recoveryQuestion) {
+          // Navigate to the 'Detail' screen
+          navigation.navigate('Detail');
+        } else {
+          // Handle case where answers do not match
+          console.log('Recovery answer does not match');
+        }
+      } catch (error) {
+        console.error('Error retrieving recovery answer:', error);
+      }
     };
-
     return (
         <View style={styles.container}>
              <TouchableOpacity onPress={() => navigation.replace('Home')} style={styles.backButton}>
@@ -19,12 +33,12 @@ const ForgotPasswordScreen = () => {
             </TouchableOpacity>
             <Text style={styles.title}>Forgot Password?</Text>
             <Text style={styles.subtitle}>Enter your email and answer the recovery question</Text>
-            <TextInput
+            {/* <TextInput
                 style={styles.input}
                 placeholder="Email"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
-            />
+            /> */}
             <TextInput
                 style={styles.input}
                 placeholder="Best friend name"
